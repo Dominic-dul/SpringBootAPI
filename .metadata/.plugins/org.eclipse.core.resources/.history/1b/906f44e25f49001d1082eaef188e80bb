@@ -1,0 +1,10 @@
+package com.visma.service;
+
+import com.visma.meetings.model.Meeting;
+import com.visma.meetings.model.ResponseModel;
+
+public interface MeetingsService {
+
+	ResponseModel addMeeting(Meeting meeting);
+
+}

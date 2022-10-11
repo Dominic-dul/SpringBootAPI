@@ -1,0 +1,21 @@
+package com.visma.meetings.contollers;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.visma.meetings.model.Meeting;
+import com.visma.meetings.model.ResponseModel;
+import com.visma.service.MeetingsService;
+
+@RestController
+public class MeetingsContoller {
+	
+	MeetingsService meetingsService;
+	
+	@PostMapping("/meeting")
+	public ResponseModel addMeeting(@RequestBody Meeting meeting) {
+		return meetingsService.addMeeting(meeting);
+	}
+}

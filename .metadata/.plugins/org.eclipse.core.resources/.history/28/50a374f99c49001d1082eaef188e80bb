@@ -1,0 +1,60 @@
+package com.visma.meetings.model;
+
+import java.util.Date;
+
+public class Meeting {
+	String name;
+	Person responsiblePerson;
+	String Description;
+	Category category;
+	Type type;
+	String startDate;
+	String endDate;
+	
+	public enum Type{Live, InPerson}
+	public enum Category{CodeMonkey, Hub, Short, TeamBuilding}
+
+	
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public Person getResponsiblePerson() {
+		return responsiblePerson;
+	}
+	public void setResponsiblePerson(Person responsiblePerson) {
+		this.responsiblePerson = responsiblePerson;
+	}
+	public String getDescription() {
+		return Description;
+	}
+	public void setDescription(String description) {
+		Description = description;
+	}
+	public Category getCategory() {
+		return category;
+	}
+	public void setCategory(Category category) {
+		this.category = category;
+	}
+	public Type getType() {
+		return type;
+	}
+	public void setType(Type type) {
+		this.type = type;
+	}
+	public String getStartDate() {
+		return startDate;
+	}
+	public void setStartDate(String startDate) {
+		this.startDate = startDate;
+	}
+	public String getEndDate() {
+		return endDate;
+	}
+	public void setEndDate(String endDate) {
+		this.endDate = endDate;
+	}
+}
