@@ -1,0 +1,8 @@
+package com.visma.meetings.utils;
+
+public class Constants {
+	public static final String SUCCESS = "Success!";
+	public static final String FAIL = "Fail!";
+	public static final String MEETING_ADDED_SUCCESSFULLY = "Meeting Added Successfully!";
+	
+}

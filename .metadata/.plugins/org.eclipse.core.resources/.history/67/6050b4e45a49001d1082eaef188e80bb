@@ -1,0 +1,16 @@
+package com.visma.meetings.model;
+
+import java.time.LocalDate;
+
+public class Meeting {
+	String name;
+	String responsiblePerson;
+	String Description;
+	Category category;
+	Type type;
+	LocalDate startDate;
+	LocalDate endDate;
+	
+	public enum Type{Live, InPerson}
+	public enum Category{CodeMonkey, Hub, Short, TeamBuilding}
+}

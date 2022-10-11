@@ -1,0 +1,5 @@
+package com.visma.meetings.model;
+
+public class Meeting {
+
+}
