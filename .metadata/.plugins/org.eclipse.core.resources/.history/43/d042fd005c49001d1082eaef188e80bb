@@ -1,5 +1,0 @@
-package com.visma.service;
-
-public class MeetingsServiceImplementation implements MeetingsService {
-
-}

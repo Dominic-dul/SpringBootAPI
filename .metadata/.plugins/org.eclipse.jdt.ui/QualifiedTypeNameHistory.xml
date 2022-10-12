@@ -9,4 +9,5 @@
     <fullyQualifiedTypeName name="com.visma.meetings.model.Category"/>
     <fullyQualifiedTypeName name="com.visma.meetings.model.Type"/>
     <fullyQualifiedTypeName name="java.util.Date"/>
+    <fullyQualifiedTypeName name="java.util.stream.Collectors"/>
 </qualifiedTypeNameHistroy>

@@ -1,0 +1,331 @@
+package com.visma.service;
+
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Service;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.visma.meetings.model.Category;
+import com.visma.meetings.model.Meeting;
+import com.visma.meetings.model.ResponseModel;
+import com.visma.meetings.model.Type;
+import com.visma.meetings.utils.Constants;
+
+@Service
+public class MeetingsServiceImplementation implements MeetingsService {
+
+	@Override
+	public ResponseModel addMeeting(Meeting meeting) {
+		ResponseModel responseModel = new ResponseModel();
+
+		List<Meeting> meetingData = readJsonFile();
+		Meeting meetingPresent = null;
+
+		if (meetingData != null) {
+			meetingPresent = meetingData.parallelStream().filter(meet -> meet.getName().equals(meeting.getName()))
+					.findAny().orElse(null);
+		} else {
+			meetingData = new ArrayList<>();
+		}
+		if (meetingPresent == null) {
+			meetingData.add(meeting);
+
+			boolean status = writeJsonFile(meetingData);
+
+			if (status) {
+				responseModel.setStatus(Constants.SUCCESS);
+				responseModel.setData(Constants.MEETING_ADDED_SUCCESSFULLY);
+			}
+		} else {
+			responseModel.setData(Constants.MEETING_ALREADY_PRESENT);
+		}
+		return responseModel;
+	}
+
+	public List<Meeting> readJsonFile() {
+		List<Meeting> meetings = new ArrayList<>();
+		try {
+			String json = Files.readString(Path.of("meetings.json"));
+			meetings = new Gson().fromJson(json, new TypeToken<List<Meeting>>() {
+			}.getType());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return meetings;
+	}
+
+	public boolean writeJsonFile(List<Meeting> meetingData) {
+		boolean status = false;
+		try (FileWriter file = new FileWriter("meetings.json")) {
+			file.write(new Gson().toJson(meetingData));
+			file.flush(); // ?
+
+			status = true;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return status;
+	}
+
+	@Override
+	public ResponseModel fetchAllMeetings() {
+		ResponseModel responseModel = new ResponseModel();
+
+		List<Meeting> meetingData = readJsonFile();
+
+		responseModel.setStatus(Constants.SUCCESS);
+		responseModel.setData(meetingData);
+
+		return responseModel;
+	}
+
+	@Override
+	public ResponseModel fetchMeetingByDescription(String description) {
+		ResponseModel responseModel = new ResponseModel();
+
+		List<Meeting> matchingMeetings = new ArrayList<>();
+		List<Meeting> meetingData = readJsonFile();
+
+		matchingMeetings.addAll(meetingData.parallelStream().filter(meet -> meet.getDescription().contains(description))
+				.collect(Collectors.toList()));
+
+		if (matchingMeetings.size() == 0) {
+			responseModel.setStatus(Constants.SUCCESS);
+			responseModel.setData(Constants.MEETING_NOT_FOUND);
+		} else {
+			responseModel.setStatus(Constants.SUCCESS);
+			responseModel.setData(matchingMeetings);
+		}
+		return responseModel;
+	}
+
+	@Override
+	public ResponseModel fetchMeetingByResponsiblePerson(String person) {
+		ResponseModel responseModel = new ResponseModel();
+
+		List<Meeting> matchingMeetings = new ArrayList<>();
+		List<Meeting> meetingData = readJsonFile();
+
+		matchingMeetings.addAll(meetingData.parallelStream().filter(meet -> meet.getResponsiblePerson().equals(person))
+				.collect(Collectors.toList()));
+
+		if (matchingMeetings.size() == 0) {
+			responseModel.setStatus(Constants.SUCCESS);
+			responseModel.setData(Constants.MEETING_NOT_FOUND);
+		} else {
+			responseModel.setStatus(Constants.SUCCESS);
+			responseModel.setData(matchingMeetings);
+		}
+
+		return responseModel;
+	}
+
+	@Override
+	public ResponseModel fetchMeetingByCategory(Category category) {
+		ResponseModel responseModel = new ResponseModel();
+
+		List<Meeting> matchingMeetings = new ArrayList<>();
+		List<Meeting> meetingData = readJsonFile();
+
+		matchingMeetings.addAll(meetingData.parallelStream().filter(meet -> meet.getCategory().equals(category))
+				.collect(Collectors.toList()));
+
+		if (matchingMeetings.size() == 0) {
+			responseModel.setStatus(Constants.SUCCESS);
+			responseModel.setData(Constants.MEETING_NOT_FOUND);
+		} else {
+			responseModel.setStatus(Constants.SUCCESS);
+			responseModel.setData(matchingMeetings);
+		}
+
+		return responseModel;
+	}
+
+	@Override
+	public ResponseModel fetchMeetingByType(Type type) {
+		ResponseModel responseModel = new ResponseModel();
+
+		List<Meeting> matchingMeetings = new ArrayList<>();
+		List<Meeting> meetingData = readJsonFile();
+
+		matchingMeetings.addAll(
+				meetingData.parallelStream().filter(meet -> meet.getType().equals(type)).collect(Collectors.toList()));
+
+		if (matchingMeetings.size() == 0) {
+			responseModel.setStatus(Constants.SUCCESS);
+			responseModel.setData(Constants.MEETING_NOT_FOUND);
+		} else {
+			responseModel.setStatus(Constants.SUCCESS);
+			responseModel.setData(matchingMeetings);
+		}
+
+		return responseModel;
+	}
+
+	@Override
+	public ResponseModel fetchMeetingByAttendees(int number) {
+		ResponseModel responseModel = new ResponseModel();
+
+		List<Meeting> matchingMeetings = new ArrayList<>();
+		List<Meeting> meetingData = readJsonFile();
+
+		matchingMeetings.addAll(meetingData.parallelStream().filter(meet -> meet.getParticipants().size() > number)
+				.collect(Collectors.toList()));
+
+		if (matchingMeetings.size() == 0) {
+			responseModel.setStatus(Constants.SUCCESS);
+			responseModel.setData(Constants.MEETING_NOT_FOUND);
+		} else {
+			responseModel.setStatus(Constants.SUCCESS);
+			responseModel.setData(matchingMeetings);
+		}
+
+		return responseModel;
+	}
+
+	@Override
+	public ResponseModel fetchMeetingByDate(Date date) {
+		ResponseModel responseModel = new ResponseModel();
+
+		List<Meeting> matchingMeetings = new ArrayList<>();
+		List<Meeting> meetingData = readJsonFile();
+
+		matchingMeetings.addAll(meetingData.parallelStream().filter(meet -> meet.getStartDate().compareTo(date) > 0)
+				.collect(Collectors.toList()));
+
+		if (matchingMeetings.size() == 0) {
+			responseModel.setStatus(Constants.SUCCESS);
+			responseModel.setData(Constants.MEETING_NOT_FOUND);
+		} else {
+			responseModel.setStatus(Constants.SUCCESS);
+			responseModel.setData(matchingMeetings);
+		}
+
+		return responseModel;
+	}
+
+	@Override
+	public ResponseModel deleteMeeting(String meetingName, String responsibleName) {
+		ResponseModel responseModel = new ResponseModel();
+
+		List<Meeting> meetingData = readJsonFile();
+
+		Meeting matchingMeetingName = meetingData.parallelStream().filter(meet -> meet.getName().equals(meetingName))
+				.findAny().orElse(null);
+
+		if (matchingMeetingName == null) {
+			responseModel.setStatus(Constants.SUCCESS);
+			responseModel.setData(Constants.MEETING_NOT_FOUND);
+		} else {
+			meetingData
+					.removeIf(meet -> meet.getResponsiblePerson().equals(matchingMeetingName.getResponsiblePerson()));
+
+			boolean status = writeJsonFile(meetingData);
+
+			if (status) {
+				responseModel.setStatus(Constants.SUCCESS);
+				responseModel.setData(Constants.MEETING_DELETED_SUCCESSFULLY);
+			}
+		}
+
+		return responseModel;
+	}
+
+	@Override
+	public ResponseModel removePersonFromMeeting(String meetingName, String personName) {
+		ResponseModel responseModel = new ResponseModel();
+
+		List<Meeting> meetingData = readJsonFile();
+
+		Meeting matchingMeeting = meetingData.parallelStream().filter(meet -> meet.getName().equals(meetingName))
+				.findAny().orElse(null);
+
+		if (matchingMeeting == null) {
+			responseModel.setStatus(Constants.SUCCESS);
+			responseModel.setData(Constants.MEETING_NOT_FOUND);
+		} else if (matchingMeeting.getResponsiblePerson().equals(personName)) {
+			responseModel.setStatus(Constants.SUCCESS);
+			responseModel.setData(Constants.UNABLE_TO_REMOVE_A_PERSON);
+		} else {
+			meetingData.removeIf(meet -> meet.getName().equals(meetingName));
+
+			List<String> participants = matchingMeeting.getParticipants();
+			participants.remove(personName);
+			matchingMeeting.setParticipants(participants);
+
+			meetingData.add(matchingMeeting);
+
+			boolean status = writeJsonFile(meetingData);
+
+			if (status) {
+				responseModel.setStatus(Constants.SUCCESS);
+				responseModel.setData(Constants.PERSON_REMOVED_SUCCESSFULLY);
+			}
+		}
+
+		return responseModel;
+	}
+
+	@Override
+	public ResponseModel addPersonToMeeting(String personName, Date time) {
+		ResponseModel responseModel = new ResponseModel();
+		
+		List<Meeting> meetingData = readJsonFile();
+		Meeting matchingMeeting = meetingData.parallelStream().filter(meet -> meet.getStartDate().compareTo(time) == 0)
+				.findAny().orElse(null);
+
+		if (matchingMeeting == null) {
+			responseModel.setStatus(Constants.SUCCESS);
+			responseModel.setData(Constants.MEETING_NOT_FOUND);
+		} else if (matchingMeeting.getParticipants().indexOf(personName) != -1) {
+			responseModel.setStatus(Constants.SUCCESS);
+			responseModel.setData(Constants.PERSON_ALREADY_PRESENT);
+		} else if (meetingData.parallelStream().filter(meet -> meet.getParticipants().indexOf(personName) != -1)
+				.collect(Collectors.toList()).size() != 0){
+			responseModel.setStatus(Constants.SUCCESS);
+			responseModel.setData(Constants.PERSON_HAS_ANOTHER_MEETING);
+		}
+		else {
+			meetingData.removeIf(meet -> meet.getName().equals(matchingMeeting.getName()));
+			
+			List<String> participants = matchingMeeting.getParticipants();
+			participants.add(personName);
+			matchingMeeting.setParticipants(participants);
+
+			meetingData.add(matchingMeeting);
+
+			boolean status = writeJsonFile(meetingData);
+
+			if (status) {
+				responseModel.setStatus(Constants.SUCCESS);
+				responseModel.setData(Constants.PERSON_ADDED_SUCCESSFULLY);
+			}
+		}
+		
+		return responseModel;
+	}
+	
+	public boolean hasAnotherMeeting(String personName, List<Meeting> meetingData){
+		
+		List<Meeting> matchingMeetings = meetingData.parallelStream().filter(meet -> meet.getParticipants().indexOf(personName) != -1)
+				.collect(Collectors.toList());
+		
+		if (matchingMeetings.size() == 0) {
+			return false;
+		} else {
+			return true;
+		}
+		
+	}
+
+}

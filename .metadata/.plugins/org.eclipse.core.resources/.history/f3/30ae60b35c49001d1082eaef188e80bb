@@ -1,8 +1,0 @@
-package com.visma.service;
-
-import org.springframework.stereotype.Service;
-
-@Service
-public class MeetingsServiceImplementation implements MeetingsService {
-
-}
