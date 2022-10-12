@@ -1,0 +1,63 @@
+package com.visma.meetings.contollers;
+
+import java.util.Date;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.visma.meetings.model.Category;
+import com.visma.meetings.model.Meeting;
+import com.visma.meetings.model.Person;
+import com.visma.meetings.model.ResponseModel;
+import com.visma.meetings.model.Type;
+import com.visma.service.MeetingsService;
+import com.visma.service.MeetingsServiceImplementation;
+
+@RestController
+public class MeetingsContoller {
+	
+	MeetingsService meetingsService = new MeetingsServiceImplementation();
+	
+	@PostMapping("/meeting")
+	public ResponseModel addMeeting(@RequestBody Meeting meeting) {
+		return meetingsService.addMeeting(meeting);
+	}
+	
+	@GetMapping("/meeting/all")
+	public ResponseModel fetchAllMeetings() {
+		return meetingsService.fetchAllMeetings();
+	}
+	
+	@GetMapping("/meeting/description/{description}")
+	public ResponseModel fetchMeetingByDescription(@PathVariable String description) {
+		return meetingsService.fetchMeetingByDescription(description);
+	}
+	
+	@GetMapping("/meeting/responsible/{person}")
+	public ResponseModel fetchMeetingByResponsiblePerson(@PathVariable String person) {
+		return meetingsService.fetchMeetingByResponsiblePerson(person);
+	}
+	
+	@GetMapping("/meeting/category/{category}")
+	public ResponseModel fetchMeetingByCategory(@PathVariable Category category) {
+		return meetingsService.fetchMeetingByCategory(category);
+	}
+	
+	@GetMapping("/meeting/type/{type}")
+	public ResponseModel fetchMeetingByType(@PathVariable Type type) {
+		return meetingsService.fetchMeetingByType(type);
+	}
+	
+	@GetMapping("/meeting/attendees/{attendees}")
+	public ResponseModel fetchMeetingByAttendees(@PathVariable int attendees) {
+		return meetingsService.fetchMeetingByAttendees(attendees);
+	}
+	
+	@GetMapping("/meeting/date/{date}")
+	public ResponseModel fetchMeetingByDate(@PathVariable Date date) {
+		return meetingsService.fetchMeetingByDate(date);
+	}
+}

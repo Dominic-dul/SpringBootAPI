@@ -1,2 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<qualifiedTypeNameHistroy/>
+<qualifiedTypeNameHistroy>
+    <fullyQualifiedTypeName name="java.nio.file.Files"/>
+    <fullyQualifiedTypeName name="java.nio.file.Path"/>
+    <fullyQualifiedTypeName name="java.io.IOException"/>
+    <fullyQualifiedTypeName name="com.visma.meetings.utils.Constants"/>
+    <fullyQualifiedTypeName name="com.visma.service.MeetingsServiceImplementation"/>
+    <fullyQualifiedTypeName name="com.visma.meetings.model.Person"/>
+    <fullyQualifiedTypeName name="com.visma.meetings.model.Category"/>
+    <fullyQualifiedTypeName name="com.visma.meetings.model.Type"/>
+    <fullyQualifiedTypeName name="java.util.Date"/>
+</qualifiedTypeNameHistroy>

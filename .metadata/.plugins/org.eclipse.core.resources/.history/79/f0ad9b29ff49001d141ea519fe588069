@@ -1,0 +1,30 @@
+package com.visma.service;
+
+import java.util.Date;
+
+import com.visma.meetings.model.Category;
+import com.visma.meetings.model.Meeting;
+import com.visma.meetings.model.ResponseModel;
+import com.visma.meetings.model.Type;
+
+public interface MeetingsService {
+
+	ResponseModel addMeeting(Meeting meeting);
+
+	ResponseModel fetchAllMeetings();
+
+	ResponseModel fetchMeetingByDescription(String description);
+
+	ResponseModel fetchMeetingByResponsiblePerson(String person);
+
+	ResponseModel fetchMeetingByCategory(Category category);
+
+	ResponseModel fetchMeetingByType(Type type);
+
+	ResponseModel fetchMeetingByAttendees(int number);
+
+	ResponseModel fetchMeetingByDate(Date date);
+
+	ResponseModel deleteMeeting(String meetingName, String responsibleName);
+
+}

@@ -1,0 +1,12 @@
+package com.visma.meetings.utils;
+
+public class Constants {
+	public static final String SUCCESS = "Success!";
+	public static final String FAIL = "Fail!";
+	public static final String MEETING_ADDED_SUCCESSFULLY = "Meeting Added Successfully!";
+	public static final String MEETING_ALREADY_PRESENT = "Meeting With This ID Is Already Present!";
+	public static final String MEETING_DETAILS_UPDATED_SUCCESSFULLY = "Meeting Details Updated Successfully!";
+	public static final String MEETING_DELETED_SUCCESSFULLY = "Meeting Deleted Successfully!";
+	public static final String PERSON_REMOVED_SUCCESSFULLY = "Person Removed Successfully!";
+	public static final String MEETING_NOT_FOUND = "Meeting Not Found";
+}

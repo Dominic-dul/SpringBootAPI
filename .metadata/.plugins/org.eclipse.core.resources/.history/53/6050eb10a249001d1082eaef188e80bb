@@ -1,0 +1,14 @@
+package com.visma.service;
+
+import org.springframework.stereotype.Service;
+
+import com.visma.meetings.model.Meeting;
+import com.visma.meetings.model.ResponseModel;
+
+public interface MeetingsService {
+
+	ResponseModel addMeeting(Meeting meeting);
+
+	ResponseModel fetchAllMeetings();
+
+}
